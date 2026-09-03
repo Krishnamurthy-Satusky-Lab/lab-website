@@ -26,7 +26,7 @@ export const people: Person[] = [
   },
   {
     name: 'Matt Satusky',
-    role: 'Research Professor, SDIS',
+    role: 'Research Scientist, RENCI',
     group: 'faculty',
     blurb:
       'Avery leads the lab’s work on trustworthy clinical AI, with a focus on methods that hold up across the full range of patients a health system actually serves. Before UNC, they trained in biomedical informatics and worked with safety-net health systems on deployment.',
