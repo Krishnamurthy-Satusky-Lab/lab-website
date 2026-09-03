@@ -4,9 +4,11 @@ import Avatar from './Avatar.astro';
 
 interface Props {
   person: Person;
-  featured?: boolean;
+  // lead: PI (largest) · wide: full-width core member · compact: small grid card
+  variant?: 'lead' | 'wide' | 'compact';
 }
-const { person, featured = false } = Astro.props;
+const { person, variant = 'compact' } = Astro.props;
+const avatarSize = variant === 'lead' ? 128 : variant === 'wide' ? 104 : 84;
 
 const linkLabels: Record<string, string> = {
   email: 'Email',
@@ -18,9 +20,9 @@ const entries = Object.entries(person.links ?? {}).filter(([, v]) => v && v !== 
 const hrefFor = (k: string, v: string) => (k === 'email' && v !== '#' ? `mailto:${v}` : v);
 ---
 
-<article class:list={['person', { 'person--featured': featured }]}>
+<article class:list={['person', `person--${variant}`]}>
   <div class="person__avatar">
-    <Avatar name={person.name} size={featured ? 128 : 84} />
+    <Avatar name={person.name} size={avatarSize} />
   </div>
   <div class="person__body">
     <h3 class="person__name">{person.name}</h3>
@@ -42,11 +44,11 @@ const hrefFor = (k: string, v: string) => (k === 'email' && v !== '#' ? `mailto:
 
 <style>
   .person {
-    padding: 1.4rem 0;
     display: flex;
     gap: 1.1rem;
     align-items: flex-start;
     border-top: 1px solid var(--border);
+    padding: 1.4rem 0;
   }
   .person__avatar { flex-shrink: 0; }
   .person__name { margin: 0 0 0.15rem; font-size: 1.12rem; }
@@ -67,15 +69,26 @@ const hrefFor = (k: string, v: string) => (k === 'email' && v !== '#' ? `mailto:
   .person__links { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 0.85rem; }
   .person__links a { font-size: 0.85rem; font-weight: 600; }
 
-  .person--featured {
+  /* Full-width variants: stack on mobile, avatar beside text on wider screens. */
+  .person--lead,
+  .person--wide {
     flex-direction: column;
-    text-align: left;
     padding: 1.5rem 0;
-    border-top: 4px solid var(--navy);
   }
   @media (min-width: 620px) {
-    .person--featured { flex-direction: row; align-items: center; gap: 2rem; }
+    .person--lead,
+    .person--wide { flex-direction: row; align-items: center; }
   }
-  .person--featured .person__name { font-size: 1.6rem; }
-  .person--featured .person__role { font-size: 1.02rem; }
+
+  /* Lead (PI): heaviest emphasis. */
+  .person--lead { border-top: 4px solid var(--navy); }
+  @media (min-width: 620px) { .person--lead { gap: 2rem; } }
+  .person--lead .person__name { font-size: 1.6rem; }
+  .person--lead .person__role { font-size: 1.02rem; }
+
+  /* Wide: full width, a step down from the lead. */
+  .person--wide { border-top: 2px solid var(--carolina-blue); }
+  @media (min-width: 620px) { .person--wide { gap: 1.75rem; } }
+  .person--wide .person__name { font-size: 1.3rem; }
+  .person--wide .person__role { font-size: 0.98rem; }
 </style>

@@ -3,7 +3,10 @@
 export interface Person {
   name: string;
   role: string;
-  group: 'pi' | 'postdoc' | 'phd' | 'staff' | 'affiliate' | 'alumni';
+  group: 'faculty' | 'postdoc' | 'phd' | 'undergrad' | 'staff' | 'affiliate' | 'alumni';
+  /** Renders this faculty member as the prominent featured card. Set false
+      (or omit) to list all faculty as equal-sized cards instead. */
+  lead?: boolean;
   blurb: string;
   focus?: string;
   links?: { email?: string; scholar?: string; github?: string; site?: string };
@@ -12,95 +15,45 @@ export interface Person {
 
 export const people: Person[] = [
   {
-    name: 'Dr. Avery Chen',
-    role: 'Principal Investigator · Assistant Professor, SDIS',
-    group: 'pi',
+    name: 'Ashok Krishnamurthy',
+    role: 'Principal Investigator · Professor, SDIS',
+    group: 'faculty',
+    lead: true,
+    blurb:
+      'Data analytics with applications in health care and social science, high-end computing for modeling and simulation, advanced computational tools to improve industrial productivity through virtual product and process development, digital processing to extract information from images, audio and other signals.',
+    focus: 'Clinical NLP · fairness · human-AI decision making',
+    links: { email: 'ashok@renci.org' },
+  },
+  {
+    name: 'Matt Satusky',
+    role: 'Research Professor, SDIS',
+    group: 'faculty',
     blurb:
       'Avery leads the lab’s work on trustworthy clinical AI, with a focus on methods that hold up across the full range of patients a health system actually serves. Before UNC, they trained in biomedical informatics and worked with safety-net health systems on deployment.',
     focus: 'Clinical NLP · fairness · human-AI decision making',
     links: { email: 'avery.chen@unc.edu' },
   },
   {
-    name: 'Dr. Priya Nair',
+    name: 'Swaroopa Dola',
     role: 'Postdoctoral Fellow',
     group: 'postdoc',
-    blurb: 'Federated learning and differential privacy for multi-hospital studies.',
-    focus: 'Privacy-preserving ML',
+    blurb: 'AI methods for building clinical knowledge.',
+    focus: 'Knowledge graphs · Clinical NLP',
   },
   {
-    name: 'Dr. Marcus Bell',
+    name: 'Juan Garcia',
     role: 'Postdoctoral Fellow',
     group: 'postdoc',
-    blurb: 'Evaluation and calibration of clinical risk models across subgroups.',
-    focus: 'Fair prediction · calibration',
-  },
-  {
-    name: 'Sofia Ramirez',
-    role: 'PhD Student, Information Science',
-    group: 'phd',
-    blurb: 'Retrieval-grounded language assistants for public-health decision support.',
-    focus: 'LLMs · public health',
-  },
-  {
-    name: 'Daniel Okoro',
-    role: 'PhD Student, Information Science',
-    group: 'phd',
-    blurb: 'Extracting social determinants of health from clinical narratives.',
-    focus: 'Clinical NLP',
-  },
-  {
-    name: 'Hana Kim',
-    role: 'PhD Student, Computer Science',
-    group: 'phd',
-    blurb: 'Robust aggregation methods for heterogeneous federated networks.',
-    focus: 'Federated systems',
-  },
-  {
-    name: 'Jordan Fields',
-    role: 'PhD Student, Information Science',
-    group: 'phd',
-    blurb: 'Human-factors studies of AI decision support with frontline staff.',
-    focus: 'Human-AI interaction',
-  },
-  {
-    name: 'Taylor Reed',
-    role: 'Lab Manager & Research Associate',
-    group: 'staff',
-    blurb: 'Coordinates data governance, IRB submissions, and reproducible pipelines.',
-    focus: 'Research operations',
-  },
-  {
-    name: 'Dr. Lena Vogel',
-    role: 'Affiliate · Gillings School of Public Health',
-    group: 'affiliate',
-    blurb: 'Epidemiologist collaborating on public-health decision support.',
-  },
-  {
-    name: 'Dr. Samuel Ortiz',
-    role: 'Affiliate · UNC Health',
-    group: 'affiliate',
-    blurb: 'Physician-scientist advising clinical deployment and validation.',
-  },
-  {
-    name: 'Dr. Grace Liu',
-    role: 'PhD, 2025',
-    group: 'alumni',
-    blurb: 'Dissertation on subgroup calibration of clinical risk scores.',
-    placement: 'Now: Research Scientist, Stanford AIMI',
-  },
-  {
-    name: 'Omar Haddad',
-    role: 'MS, 2024',
-    group: 'alumni',
-    blurb: 'Thesis on weak supervision for clinical text.',
-    placement: 'Now: ML Engineer, Epic',
+    blurb: 'Quantification of uncertainty in AI models.',
+    focus: 'AI uncertainty · Model architecture',
   },
 ];
 
 export const groupLabels: Record<Person['group'], string> = {
-  pi: 'Principal Investigator',
+  faculty: 'Faculty',
   postdoc: 'Postdoctoral Fellows',
   phd: 'PhD Students',
+  undergrad: 'Undergraduate Researchers',
   staff: 'Staff',
   affiliate: 'Affiliates & Collaborators',
   alumni: 'Alumni',

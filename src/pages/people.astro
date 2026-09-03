@@ -3,9 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PersonCard from '../components/PersonCard.astro';
 import { people, groupLabels, type Person } from '../data/people';
 
-const pi = people.find((p) => p.group === 'pi')!;
-const order: Person['group'][] = ['postdoc', 'phd', 'staff', 'affiliate', 'alumni'];
+const order: Person['group'][] = ['faculty', 'postdoc', 'phd', 'undergrad', 'staff', 'affiliate', 'alumni'];
 const byGroup = (g: Person['group']) => people.filter((p) => p.group === g);
+
+// Core research roles get full-width cards so no one feels minimized; the rest
+// (undergrads, staff, affiliates, alumni) sit in the compact grid.
+const fullWidthGroups: Person['group'][] = ['faculty', 'postdoc', 'phd'];
 ---
 
 <BaseLayout title="People" description="Members of the Carolina Health AI Lab.">
@@ -22,21 +25,28 @@ const byGroup = (g: Person['group']) => people.filter((p) => p.group === g);
 
   <section class="section">
     <div class="container">
-      <p class="eyebrow">{groupLabels.pi}</p>
-      <div><PersonCard person={pi} featured /></div>
-
       {
         order.map((g) => {
           const members = byGroup(g);
           if (members.length === 0) return null;
+          const fullWidth = fullWidthGroups.includes(g);
           return (
             <div class="group">
               <h2 class="group__title">{groupLabels[g]}</h2>
-              <div class="grid grid--2 grid--3">
-                {members.map((p) => (
-                  <div><PersonCard person={p} /></div>
-                ))}
-              </div>
+              {fullWidth ? (
+                <div class="stack">
+                  {/* Lead (e.g. the PI) is larger; everyone else is full-width too. */}
+                  {members.map((p) => (
+                    <PersonCard person={p} variant={p.lead ? 'lead' : 'wide'} />
+                  ))}
+                </div>
+              ) : (
+                <div class="grid grid--2 grid--3">
+                  {members.map((p) => (
+                    <div><PersonCard person={p} variant="compact" /></div>
+                  ))}
+                </div>
+              )}
             </div>
           );
         })
@@ -47,7 +57,7 @@ const byGroup = (g: Person['group']) => people.filter((p) => p.group === g);
 
 <style>
   .pagehead { padding-block: clamp(3rem, 7vw, 5rem); }
-  .group { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
+  .group + .group { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
   .group__title {
     margin-bottom: 1.5rem;
     padding-bottom: 0.6rem;
