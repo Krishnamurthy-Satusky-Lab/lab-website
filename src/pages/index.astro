@@ -5,6 +5,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import { projects } from '../data/projects';
 import { publications } from '../data/publications';
 import { site } from '../data/site';
+import { url } from '../lib/url';
 
 const featured = projects.slice(0, 3);
 const latest = publications[0];
@@ -39,7 +40,7 @@ const latest = publications[0];
           <p class="eyebrow">Selected work</p>
           <h2>Current research</h2>
         </div>
-        <a href="/research/" class="text-link">View all projects</a>
+        <a href={url('/research/')} class="text-link">View all projects</a>
       </div>
       <div class="grid grid--3">
         {featured.map((p) => <ProjectCard project={p} compact />)}
@@ -53,7 +54,7 @@ const latest = publications[0];
         <p class="eyebrow">Recent publication</p>
         <h3>{latest.title}</h3>
         <p class="feature-pub__meta">{latest.authors} · <em>{latest.venue}</em>, {latest.year}</p>
-        <a href="/publications/" class="pcard__more" style="color: var(--bolin-creek); font-family: var(--font-display); font-weight: 700;">
+        <a href={url('/publications/')} class="pcard__more" style="color: var(--bolin-creek); font-family: var(--font-display); font-weight: 700;">
           See all publications
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -64,7 +65,7 @@ const latest = publications[0];
           We welcome inquiries from prospective students, postdoctoral researchers,
           and potential collaborators.
         </p>
-        <a href="/contact/" class="btn btn--accent">Contact information</a>
+        <a href={url('/contact/')} class="btn btn--accent">Contact information</a>
         <a href={`mailto:${site.email}`} class="join-card__mail">{site.email}</a>
       </aside>
     </div>

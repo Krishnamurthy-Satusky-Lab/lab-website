@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site';
+import { url } from '../lib/url';
 ---
 
 <section class="hero">
@@ -10,8 +11,8 @@ import { site } from '../data/site';
     </h1>
     <p class="hero__lead">{site.mission}</p>
     <div class="hero__actions">
-      <a href="/research/" class="btn btn--primary">Research</a>
-      <a href="/people/" class="hero__text-link">People</a>
+      <a href={url('/research/')} class="btn btn--primary">Research</a>
+      <a href={url('/people/')} class="hero__text-link">People</a>
     </div>
   </div>
 </section>

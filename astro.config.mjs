@@ -1,10 +1,12 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-// Host-agnostic static output. When hosting is chosen, set `site` (and `base`
-// for a GitHub Pages project path) here.
+// Deployed to GitHub Pages at a project path:
+// https://satusky.github.io/lab-website-mockup/
+// If you later move to a custom/root domain, set `site` to it and remove `base`.
 export default defineConfig({
-  // site: 'https://example.org',
+  site: 'https://satusky.github.io',
+  base: '/lab-website-mockup',
   build: {
     format: 'directory',
   },
