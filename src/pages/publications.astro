@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PublicationItem from '../components/PublicationItem.astro';
+import { publications, topics, years } from '../data/publications';
+
+const sorted = [...publications].sort((a, b) => b.year - a.year);
+---
+
+<BaseLayout title="Publications" description="Publications and citations from the Carolina Health AI Lab.">
+  <section class="pagehead">
+    <div class="container">
+      <p class="eyebrow">Publications</p>
+      <h1>Publications</h1>
+      <p class="lead">
+        Peer-reviewed work in clinical NLP, prediction, privacy, and human-AI
+        collaboration. Use the filters below to browse by topic and year.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="filters" data-filters>
+        <div class="filters__group" role="group" aria-label="Filter by topic">
+          <span class="filters__label">Topic</span>
+          {
+            topics.map((t, i) => (
+              <button class:list={['chip', { 'is-on': i === 0 }]} data-topic-filter={t} type="button">{t}</button>
+            ))
+          }
+        </div>
+        <div class="filters__group" role="group" aria-label="Filter by year">
+          <span class="filters__label">Year</span>
+          <button class="chip is-on" data-year-filter="All" type="button">All</button>
+          {years.map((y) => <button class="chip" data-year-filter={y} type="button">{y}</button>)}
+        </div>
+      </div>
+
+      <p class="filters__count" data-count-line aria-live="polite"></p>
+
+      <!-- List -->
+      <div class="publist" data-publist>
+        {sorted.map((pub) => <PublicationItem pub={pub} />)}
+      </div>
+      <p class="publist__empty" data-empty hidden>No publications match those filters.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .pagehead { padding-block: clamp(3rem, 7vw, 5rem); }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2.5rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .filters__group { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .filters__label {
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--old-well-basin);
+    margin-right: 0.25rem;
+  }
+  .chip {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--bolin-creek);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.4rem 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease);
+  }
+  .chip:hover { border-color: var(--carolina-blue); background: var(--cloud); }
+  .chip.is-on { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+  .filters__count { font-size: 0.85rem; color: var(--old-well-basin); margin: 1rem 0 0; }
+  .publist { margin-top: 0.5rem; }
+  .publist__empty { padding: 2rem 0; color: var(--ink-soft); }
+</style>
+
+<script>
+  const list = document.querySelector('[data-publist]');
+  const empty = document.querySelector('[data-empty]') as HTMLElement | null;
+  const countLine = document.querySelector('[data-count-line]') as HTMLElement | null;
+  const items = Array.from(document.querySelectorAll<HTMLElement>('.pub'));
+  let topic = 'All';
+  let year = 'All';
+
+  const apply = () => {
+    let shown = 0;
+    items.forEach((el) => {
+      const okTopic = topic === 'All' || el.dataset.topic === topic;
+      const okYear = year === 'All' || el.dataset.year === year;
+      const show = okTopic && okYear;
+      el.hidden = !show;
+      if (show) shown++;
+    });
+    if (empty) empty.hidden = shown !== 0;
+    if (countLine) countLine.textContent = `Showing ${shown} of ${items.length} publications.`;
+  };
+
+  const wire = (attr: string, set: (v: string) => void) => {
+    document.querySelectorAll<HTMLButtonElement>(`[${attr}]`).forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll(`[${attr}]`).forEach((b) => b.classList.remove('is-on'));
+        btn.classList.add('is-on');
+        set(btn.getAttribute(attr)!);
+        apply();
+      });
+    });
+  };
+  wire('data-topic-filter', (v) => (topic = v));
+  wire('data-year-filter', (v) => (year = v));
+  apply();
+
+  // Copy BibTeX
+  document.querySelectorAll<HTMLButtonElement>('.pub__bib').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const bib = btn.dataset.bibtex || '';
+      try {
+        await navigator.clipboard.writeText(bib);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = bib;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+      }
+      const original = btn.textContent;
+      btn.textContent = 'Copied BibTeX';
+      btn.classList.add('is-copied');
+      setTimeout(() => {
+        btn.textContent = original;
+        btn.classList.remove('is-copied');
+      }, 1600);
+    });
+  });
+</script>

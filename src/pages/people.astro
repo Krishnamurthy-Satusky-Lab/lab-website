@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PersonCard from '../components/PersonCard.astro';
+import { people, groupLabels, type Person } from '../data/people';
+
+const pi = people.find((p) => p.group === 'pi')!;
+const order: Person['group'][] = ['postdoc', 'phd', 'staff', 'affiliate', 'alumni'];
+const byGroup = (g: Person['group']) => people.filter((p) => p.group === g);
+---
+
+<BaseLayout title="People" description="Members of the Carolina Health AI Lab.">
+  <section class="pagehead">
+    <div class="container">
+      <p class="eyebrow">People</p>
+      <h1>Lab members</h1>
+      <p class="lead">
+        Our group includes researchers in informatics, computer science, clinical
+        practice, and public health.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">{groupLabels.pi}</p>
+      <div><PersonCard person={pi} featured /></div>
+
+      {
+        order.map((g) => {
+          const members = byGroup(g);
+          if (members.length === 0) return null;
+          return (
+            <div class="group">
+              <h2 class="group__title">{groupLabels[g]}</h2>
+              <div class="grid grid--2 grid--3">
+                {members.map((p) => (
+                  <div><PersonCard person={p} /></div>
+                ))}
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .pagehead { padding-block: clamp(3rem, 7vw, 5rem); }
+  .group { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
+  .group__title {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--franklin-fog);
+  }
+</style>

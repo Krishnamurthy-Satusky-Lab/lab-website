@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { projects } from '../data/projects';
+---
+
+<BaseLayout title="Research" description="Research projects at the Carolina Health AI Lab.">
+  <section class="pagehead">
+    <div class="container">
+      <p class="eyebrow">Research</p>
+      <h1>Current projects</h1>
+      <p class="lead">
+        We work on clinical language processing, prediction, privacy, and public-health
+        decision support. Each project below describes its methods and collaborators.
+      </p>
+    </div>
+  </section>
+
+  <div class="container research">
+    <aside class="subnav" aria-label="Projects">
+      <p class="subnav__title">Projects</p>
+      <nav>
+        {projects.map((p) => <a href={`#${p.id}`} class="subnav__link" data-subnav={p.id}>{p.title}</a>)}
+      </nav>
+    </aside>
+
+    <div class="projects">
+      {
+        projects.map((p) => (
+          <section id={p.id} class="proj">
+            <div class="proj__head">
+              <p class="proj__meta">{p.status} · {p.topics.join(' / ')}</p>
+              <h2>{p.title}</h2>
+              <p class="proj__tagline">{p.tagline}</p>
+            </div>
+            <p class="proj__summary">{p.summary}</p>
+            <div class="proj__grid">
+              <div>
+                <h3>Our approach</h3>
+                <ul class="proj__list">
+                  {p.approach.map((a) => <li>{a}</li>)}
+                </ul>
+              </div>
+              <div class="proj__aside">
+                <h3>Collaborators</h3>
+                <ul class="proj__list proj__list--plain">
+                  {p.collaborators.map((c) => <li>{c}</li>)}
+                </ul>
+                {p.funding && (
+                  <p class="proj__funding"><strong>Funding:</strong> {p.funding}</p>
+                )}
+              </div>
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .pagehead { padding-block: clamp(3rem, 7vw, 5rem); }
+  .research {
+    display: grid;
+    gap: 2.5rem;
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+  }
+  @media (min-width: 940px) {
+    .research { grid-template-columns: 220px 1fr; gap: 3.5rem; align-items: start; }
+  }
+
+  .subnav { display: none; }
+  @media (min-width: 940px) {
+    .subnav { display: block; position: sticky; top: 92px; }
+  }
+  .subnav__title {
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--old-well-basin);
+    margin-bottom: 0.75rem;
+  }
+  .subnav nav { display: flex; flex-direction: column; gap: 0.15rem; }
+  .subnav__link {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    padding: 0.5rem 0.75rem;
+    border-left: 2px solid var(--border);
+    line-height: 1.35;
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease), background 0.2s var(--ease);
+  }
+  .subnav__link:hover { color: var(--navy); text-decoration: none; background: var(--cloud); }
+  .subnav__link.is-active {
+    color: var(--bolin-creek);
+    border-left-color: var(--carolina-blue);
+    font-weight: 600;
+  }
+
+  .projects { display: flex; flex-direction: column; gap: clamp(3rem, 7vw, 5rem); }
+  .proj { scroll-margin-top: 92px; }
+  .proj { border-top: 4px solid var(--navy); padding-top: 1.5rem; }
+  .proj__meta {
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--old-well-basin);
+    margin-bottom: 0.75rem;
+  }
+  .proj h2 { margin: 0 0 0.35rem; }
+  .proj__tagline {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--bolin-creek);
+    margin: 0 0 1rem;
+  }
+  .proj__summary { font-size: 1.05rem; color: var(--ink-soft); max-width: 68ch; }
+  .proj__grid {
+    display: grid;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  @media (min-width: 680px) { .proj__grid { grid-template-columns: 1.5fr 1fr; } }
+  .proj__grid h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--old-well-basin); }
+  .proj__list { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.5rem; color: var(--ink-soft); }
+  .proj__list--plain { list-style: none; padding-left: 0; }
+  .proj__list--plain li { padding-left: 1rem; position: relative; }
+  .proj__list--plain li::before {
+    content: ''; position: absolute; left: 0; top: 0.6em;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--carolina-blue);
+  }
+  .proj__aside {
+    border-left: 3px solid var(--fordham);
+    padding-left: 1.25rem;
+    align-self: start;
+  }
+  .proj__funding { margin-top: 1rem; font-size: 0.9rem; color: var(--ink-soft); }
+</style>
+
+<script>
+  // Highlight the sub-nav entry for the section in view.
+  const links = new Map<string, Element>();
+  document.querySelectorAll('[data-subnav]').forEach((el) =>
+    links.set((el as HTMLElement).dataset.subnav!, el)
+  );
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          links.forEach((el) => el.classList.remove('is-active'));
+          links.get(e.target.id)?.classList.add('is-active');
+        }
+      });
+    },
+    { rootMargin: '-30% 0px -60% 0px' }
+  );
+  document.querySelectorAll('.proj').forEach((s) => io.observe(s));
+</script>

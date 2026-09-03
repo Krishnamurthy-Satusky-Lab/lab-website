@@ -1,0 +1,77 @@
+---
+import { site, nav } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <strong>{site.name}</strong>
+      <p>{site.tagline}</p>
+      <p class="footer__school">{site.school}<br />{site.university}</p>
+    </div>
+
+    <nav class="footer__nav" aria-label="Footer">
+      <h4>Explore</h4>
+      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+
+    <div class="footer__contact">
+      <h4>Contact</h4>
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+      <p>{site.location}</p>
+    </div>
+  </div>
+
+  <div class="container footer__bar">
+    <span>© {year} {site.name}</span>
+    <span>{site.university}</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--navy);
+    color: #b9c9dc;
+    padding-top: clamp(3rem, 6vw, 4.5rem);
+  }
+  .footer a { color: #cdddf0; }
+  .footer a:hover { color: var(--carolina-blue); text-decoration: none; }
+
+  .footer__grid {
+    display: grid;
+    gap: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  @media (min-width: 760px) {
+    .footer__grid { grid-template-columns: 1.6fr 1fr 1.4fr; }
+  }
+  .footer__brand strong {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+  .footer__school { color: #8ea6c4; font-size: 0.9rem; margin-top: 0.75rem; }
+
+  .footer__nav, .footer__contact { display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer h4 {
+    color: var(--carolina-blue);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0 0 0.35rem;
+  }
+  .footer__bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-block: 1.4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.82rem;
+    color: #7f97b6;
+  }
+</style>

@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout title="Contact" description="Contact the Carolina Health AI Lab for prospective students, postdocs, and collaborators.">
+  <section class="pagehead">
+    <div class="container">
+      <p class="eyebrow">Contact</p>
+      <h1>Contact the lab</h1>
+      <p class="lead">
+        Information for prospective students, postdoctoral researchers,
+        collaborators, and media inquiries.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact">
+      <div class="contact__info">
+        <div class="infocard">
+          <h2>Prospective PhD students</h2>
+          <p>
+            We admit PhD students through the
+            <strong>UNC School of Data &amp; Information Sciences</strong>. If our
+            research resonates with you, apply to the program and mention the lab
+            in your statement, then email {site.shortName} so we know to look for
+            your application.
+          </p>
+          <p class="infocard__note">
+            We especially welcome applicants with backgrounds in informatics, ML,
+            statistics, clinical practice, or public health, and are committed to
+            mentoring students from communities underrepresented in computing.
+          </p>
+        </div>
+
+        <div class="infocard">
+          <h2>Postdocs</h2>
+          <p>
+            We consider postdoctoral fellows on a rolling basis when funding
+            aligns. Send a CV, a short research statement, and two representative
+            papers.
+          </p>
+        </div>
+
+        <div class="infocard">
+          <h2>Collaborators &amp; press</h2>
+          <p>
+            Clinicians, health systems, and public-health partners: we're always
+            glad to talk. For media inquiries, email us and we'll respond promptly.
+          </p>
+        </div>
+
+        <div class="contact__details">
+          <h3>Reach us directly</h3>
+          <a class="contact__email" href={`mailto:${site.email}`}>{site.email}</a>
+          <p class="contact__loc">{site.location}</p>
+        </div>
+      </div>
+
+      <aside class="contact__form">
+        <h2>Send a message</h2>
+        <p class="contact__formnote">
+          This form opens a draft in your email application.
+        </p>
+        <form data-contact-form data-recipient={site.email}>
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" autocomplete="name" required />
+          </label>
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+          <label>
+            <span>I'm reaching out as a...</span>
+            <select name="role">
+              <option>Prospective PhD student</option>
+              <option>Prospective postdoc</option>
+              <option>Potential collaborator</option>
+              <option>Journalist / press</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>
+            <span>Message</span>
+            <textarea name="message" rows="5" required></textarea>
+          </label>
+          <button type="submit" class="btn btn--primary">Compose email</button>
+        </form>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .pagehead { padding-block: clamp(3rem, 7vw, 5rem); }
+  .contact { display: grid; gap: 2.5rem; align-items: start; }
+  @media (min-width: 900px) { .contact { grid-template-columns: 1.1fr 0.9fr; gap: 3.5rem; } }
+
+  .contact__info { display: flex; flex-direction: column; gap: 1.25rem; }
+  .infocard {
+    border-top: 1px solid var(--border);
+    padding: 1.25rem 0 0;
+  }
+  .infocard h2 { font-size: 1.2rem; margin: 0 0 0.5rem; }
+  .infocard p { color: var(--ink-soft); font-size: 0.96rem; }
+  .infocard__note { font-size: 0.9rem; margin-top: 0.75rem; }
+
+  .contact__details {
+    padding: 1.25rem 0 0;
+    border-top: 3px solid var(--carolina-blue);
+  }
+  .contact__details h3 { margin: 0 0 0.5rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--old-well-basin); }
+  .contact__email { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; }
+  .contact__loc { color: var(--ink-soft); font-size: 0.9rem; margin: 0.5rem 0 0; }
+
+  .contact__form {
+    position: sticky;
+    top: 92px;
+    background: var(--cloud);
+    border-top: 4px solid var(--navy);
+    border-radius: var(--radius);
+    padding: clamp(1.5rem, 4vw, 2.25rem);
+  }
+  .contact__form h2 { font-size: 1.4rem; margin: 0 0 0.35rem; }
+  .contact__formnote { color: var(--ink-soft); font-size: 0.94rem; margin-bottom: 1.25rem; }
+  form { display: flex; flex-direction: column; gap: 1rem; }
+  label { display: flex; flex-direction: column; gap: 0.35rem; }
+  label span { font-family: var(--font-display); font-weight: 600; font-size: 0.85rem; color: var(--navy); }
+  input, select, textarea {
+    font-family: var(--font-body);
+    font-size: 0.98rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    color: var(--ink);
+    transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--carolina-blue);
+    box-shadow: var(--ring);
+  }
+  textarea { resize: vertical; }
+</style>
+
+<script>
+  const form = document.querySelector('[data-contact-form]') as HTMLFormElement | null;
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const name = String(data.get('name') || '');
+    const email = String(data.get('email') || '');
+    const role = String(data.get('role') || '');
+    const message = String(data.get('message') || '');
+    const to = form.dataset.recipient || '';
+    const subject = `[Lab site] ${role} - ${name}`;
+    const body = `Name: ${name}\nEmail: ${email}\nRole: ${role}\n\n${message}`;
+    window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+</script>

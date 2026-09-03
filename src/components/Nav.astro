@@ -1,0 +1,197 @@
+---
+import { site, nav } from '../data/site';
+
+interface Props {
+  path: string;
+}
+const { path } = Astro.props;
+
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+
+<header class="nav" data-nav>
+  <div class="container nav__inner">
+    <a href="/" class="brand" aria-label={`${site.name} home`}>
+      <span class="brand__mark" aria-hidden="true">
+        CH
+      </span>
+      <span class="brand__text">
+        <strong>{site.shortName}</strong>
+        <small>Carolina Health AI</small>
+      </span>
+    </a>
+
+    <button class="nav__toggle" data-toggle aria-expanded="false" aria-controls="site-menu">
+      <span class="visually-hidden">Toggle menu</span>
+      <span class="nav__bars" aria-hidden="true"></span>
+    </button>
+
+    <nav id="site-menu" class="nav__menu" data-menu aria-label="Primary">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class:list={['nav__link', { 'is-active': isActive(item.href) }]}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--white);
+    border-bottom: 1px solid transparent;
+    transition: box-shadow 0.3s var(--ease), border-color 0.3s var(--ease),
+      background 0.3s var(--ease);
+  }
+  .nav.is-scrolled {
+    border-bottom-color: var(--franklin-fog);
+  }
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 68px;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--navy);
+    text-decoration: none;
+  }
+  .brand__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .brand__text { display: flex; flex-direction: column; line-height: 1.05; }
+  .brand__text strong {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+  }
+  .brand__text small { color: var(--old-well-basin); font-size: 0.72rem; letter-spacing: 0.02em; }
+
+  .nav__menu {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .nav__link {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--navy);
+    padding: 0.5rem 0.8rem;
+    border-radius: 0;
+    position: relative;
+    text-decoration: none;
+    transition: color 0.2s var(--ease), background 0.2s var(--ease);
+  }
+  .nav__link:hover { background: var(--cloud); text-decoration: none; }
+  .nav__link.is-active { color: var(--bolin-creek); }
+  .nav__link.is-active::after {
+    content: '';
+    position: absolute;
+    left: 0.8rem;
+    right: 0.8rem;
+    bottom: 0.15rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--carolina-blue);
+  }
+
+  .nav__toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--white);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav__bars,
+  .nav__bars::before,
+  .nav__bars::after {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--navy);
+    border-radius: 2px;
+    transition: transform 0.25s var(--ease), opacity 0.2s var(--ease);
+  }
+  .nav__bars { position: relative; }
+  .nav__bars::before { position: absolute; top: -6px; }
+  .nav__bars::after { position: absolute; top: 6px; }
+  .nav.is-open .nav__bars { background: transparent; }
+  .nav.is-open .nav__bars::before { transform: translateY(6px) rotate(45deg); }
+  .nav.is-open .nav__bars::after { transform: translateY(-6px) rotate(-45deg); }
+
+  @media (max-width: 820px) {
+    .nav__toggle { display: inline-flex; }
+    .nav__menu {
+      position: absolute;
+      inset: 68px 0 auto 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.25rem;
+      padding: 1rem clamp(1.1rem, 4vw, 2.5rem) 1.5rem;
+      background: rgba(255, 255, 255, 0.98);
+      border-bottom: 1px solid var(--franklin-fog);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-12px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.28s var(--ease), opacity 0.28s var(--ease);
+    }
+    .nav.is-open .nav__menu { transform: none; opacity: 1; pointer-events: auto; }
+    .nav__link { padding: 0.75rem 0.5rem; font-size: 1.05rem; }
+    .nav__link.is-active::after { display: none; }
+  }
+</style>
+
+<script>
+  const header = document.querySelector('[data-nav]');
+  const toggle = document.querySelector('[data-toggle]');
+  const menu = document.querySelector('[data-menu]');
+
+  // Add a border once page content moves under the sticky navigation.
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Mobile menu
+  toggle?.addEventListener('click', () => {
+    const open = header?.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(!!open));
+  });
+  menu?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      header?.classList.remove('is-open');
+      toggle?.setAttribute('aria-expanded', 'false');
+    })
+  );
+</script>

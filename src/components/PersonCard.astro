@@ -1,0 +1,81 @@
+---
+import type { Person } from '../data/people';
+import Avatar from './Avatar.astro';
+
+interface Props {
+  person: Person;
+  featured?: boolean;
+}
+const { person, featured = false } = Astro.props;
+
+const linkLabels: Record<string, string> = {
+  email: 'Email',
+  scholar: 'Scholar',
+  github: 'GitHub',
+  site: 'Website',
+};
+const entries = Object.entries(person.links ?? {}).filter(([, v]) => v && v !== '#');
+const hrefFor = (k: string, v: string) => (k === 'email' && v !== '#' ? `mailto:${v}` : v);
+---
+
+<article class:list={['person', { 'person--featured': featured }]}>
+  <div class="person__avatar">
+    <Avatar name={person.name} size={featured ? 128 : 84} />
+  </div>
+  <div class="person__body">
+    <h3 class="person__name">{person.name}</h3>
+    <p class="person__role">{person.role}</p>
+    {person.focus && <p class="person__focus">{person.focus}</p>}
+    <p class="person__blurb">{person.blurb}</p>
+    {person.placement && <p class="person__placement">{person.placement}</p>}
+    {
+      entries.length > 0 && (
+        <div class="person__links">
+          {entries.map(([k, v]) => (
+            <a href={hrefFor(k, v as string)} rel="noopener">{linkLabels[k] ?? k}</a>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .person {
+    padding: 1.4rem 0;
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+    border-top: 1px solid var(--border);
+  }
+  .person__avatar { flex-shrink: 0; }
+  .person__name { margin: 0 0 0.15rem; font-size: 1.12rem; }
+  .person__role { margin: 0; color: var(--bolin-creek); font-weight: 600; font-size: 0.92rem; }
+  .person__focus {
+    margin: 0.5rem 0 0;
+    font-size: 0.8rem;
+    color: var(--old-well-basin);
+    font-style: italic;
+  }
+  .person__blurb { margin: 0.7rem 0 0; font-size: 0.94rem; color: var(--ink-soft); }
+  .person__placement {
+    margin: 0.6rem 0 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--bolin-creek);
+  }
+  .person__links { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 0.85rem; }
+  .person__links a { font-size: 0.85rem; font-weight: 600; }
+
+  .person--featured {
+    flex-direction: column;
+    text-align: left;
+    padding: 1.5rem 0;
+    border-top: 4px solid var(--navy);
+  }
+  @media (min-width: 620px) {
+    .person--featured { flex-direction: row; align-items: center; gap: 2rem; }
+  }
+  .person--featured .person__name { font-size: 1.6rem; }
+  .person--featured .person__role { font-size: 1.02rem; }
+</style>

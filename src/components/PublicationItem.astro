@@ -1,0 +1,76 @@
+---
+import type { Publication } from '../data/publications';
+
+interface Props {
+  pub: Publication;
+}
+const { pub } = Astro.props;
+const links = Object.fromEntries(
+  Object.entries(pub.links ?? {}).filter(([, href]) => href && href !== '#')
+);
+---
+
+<article class="pub" data-topic={pub.topic} data-year={pub.year}>
+  <div class="pub__year" aria-hidden="true">{pub.year}</div>
+  <div class="pub__main">
+    <h3 class="pub__title">{pub.title}</h3>
+    <p class="pub__meta">
+      <span class="pub__authors">{pub.authors}</span>
+      <span class="pub__venue">{pub.venue}</span>
+    </p>
+    <div class="pub__actions">
+      <span class="pub__topic">{pub.topic}</span>
+      {links.doi && <a href={links.doi} rel="noopener">DOI</a>}
+      {links.pdf && <a href={links.pdf} rel="noopener">PDF</a>}
+      {links.code && <a href={links.code} rel="noopener">Code</a>}
+      <button
+        class="pub__bib"
+        data-bibtex={pub.bibtex}
+        type="button"
+      >Copy BibTeX</button>
+    </div>
+  </div>
+</article>
+
+<style>
+  .pub {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .pub__year {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.05rem;
+    color: var(--carolina-blue);
+    padding-top: 0.1rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .pub__title { margin: 0 0 0.35rem; font-size: 1.12rem; }
+  .pub__meta { margin: 0; display: flex; flex-direction: column; gap: 0.1rem; }
+  .pub__authors { color: var(--navy); font-weight: 600; font-size: 0.94rem; }
+  .pub__venue { color: var(--ink-soft); font-style: italic; font-size: 0.92rem; }
+  .pub__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin-top: 0.75rem;
+  }
+  .pub__actions a { font-size: 0.88rem; font-weight: 700; color: var(--hyperlink); }
+  .pub__topic { font-size: 0.82rem; color: var(--old-well-basin); }
+  .pub__bib {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--bolin-creek);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  .pub__bib:hover { text-decoration: underline; }
+  .pub__bib.is-copied { color: var(--tulip-poplar); }
+</style>

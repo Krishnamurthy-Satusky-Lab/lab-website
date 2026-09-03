@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { projects } from '../data/projects';
+import { publications } from '../data/publications';
+import { site } from '../data/site';
+
+const featured = projects.slice(0, 3);
+const latest = publications[0];
+---
+
+<BaseLayout>
+  <Hero />
+
+  <section class="section">
+    <div class="container mission">
+      <div class="mission__text">
+        <p class="eyebrow">About the lab</p>
+        <h2>Research in clinical and public health informatics</h2>
+        <p class="lead">
+          Our work examines clinical language models, risk prediction, privacy,
+          and decision support. We develop methods and evaluate them with the
+          people and institutions that may use them.
+        </p>
+      </div>
+      <ul class="mission__pillars">
+        <li><strong>Evaluation</strong><span>Performance, calibration, and utility in realistic settings.</span></li>
+        <li><strong>Equity</strong><span>Differences in model behavior across patient populations.</span></li>
+        <li><strong>Reproducibility</strong><span>Clear documentation, shared methods, and open tools.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Selected work</p>
+          <h2>Current research</h2>
+        </div>
+        <a href="/research/" class="text-link">View all projects</a>
+      </div>
+      <div class="grid grid--3">
+        {featured.map((p) => <ProjectCard project={p} compact />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container feature-row">
+      <div class="feature-pub">
+        <p class="eyebrow">Recent publication</p>
+        <h3>{latest.title}</h3>
+        <p class="feature-pub__meta">{latest.authors} · <em>{latest.venue}</em>, {latest.year}</p>
+        <a href="/publications/" class="pcard__more" style="color: var(--bolin-creek); font-family: var(--font-display); font-weight: 700;">
+          See all publications
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <aside class="join-card">
+        <h3>Open positions and collaboration</h3>
+        <p>
+          We welcome inquiries from prospective students, postdoctoral researchers,
+          and potential collaborators.
+        </p>
+        <a href="/contact/" class="btn btn--accent">Contact information</a>
+        <a href={`mailto:${site.email}`} class="join-card__mail">{site.email}</a>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .mission {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  @media (min-width: 880px) { .mission { grid-template-columns: 1.3fr 1fr; gap: 3.5rem; } }
+  .mission__pillars { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  .mission__pillars li {
+    padding: 0 0 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+  }
+  .mission__pillars strong { color: var(--navy); display: block; }
+  .mission__pillars span { display: block; }
+
+  .section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2.25rem;
+    flex-wrap: wrap;
+  }
+  .section-head h2 { margin: 0; }
+  .text-link { font-family: var(--font-display); font-weight: 700; }
+
+  .feature-row { display: grid; gap: 2rem; align-items: stretch; }
+  @media (min-width: 820px) { .feature-row { grid-template-columns: 1.5fr 1fr; } }
+  .feature-pub h3 { font-size: 1.5rem; }
+  .feature-pub__meta { color: var(--ink-soft); margin-bottom: 1.25rem; }
+
+  .join-card {
+    background: var(--cloud);
+    color: var(--ink-soft);
+    border-top: 4px solid var(--carolina-blue);
+    border-radius: var(--radius);
+    padding: clamp(1.5rem, 4vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .join-card h3 { color: var(--navy); margin: 0; }
+  .join-card p { color: var(--ink-soft); }
+  .join-card__mail { color: var(--bolin-creek); font-weight: 600; font-size: 0.92rem; }
+</style>
