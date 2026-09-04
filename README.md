@@ -44,5 +44,3 @@ reusable components in `src/components/`, and the design system in
 - **Fonts:** Libre Franklin (display) + Inter (body) + Source Serif 4 (accents) via
   Google Fonts — close, freely-licensed stand-ins for UNC's brand typefaces. Swap in
   `src/layouts/BaseLayout.astro` and `global.css`.
-- **Placeholder portraits** are generated as simple monograms. Replace them with
-  real photos when available.
