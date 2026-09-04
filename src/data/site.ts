@@ -3,7 +3,7 @@
 export const site = {
   name: 'Carolina TRACE Lab',
   shortName: 'TRACE Lab',
-  tagline: 'Transparent and Reliable AI for Complex Environments.',
+  tagline: 'Transparent & Reliable AI for Complex Environments',
   school: 'UNC School of Data & Information Sciences',
   university: 'The University of North Carolina at Chapel Hill',
   mission:
