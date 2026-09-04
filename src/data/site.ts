@@ -7,8 +7,8 @@ export const site = {
   school: 'UNC School of Data & Information Sciences',
   university: 'The University of North Carolina at Chapel Hill',
   mission:
-    'We study how machine learning can support clinical care and public health, with an emphasis on evaluation, equity, and responsible deployment.',
-  email: 'chai-lab@unc.edu',
+    'We study how machine learning can support clinical care and public health, with an emphasis on evaluation, explanability, and responsible deployment.',
+  email: 'ashok@renci.org',
   location: 'Manning Hall, UNC-Chapel Hill, Chapel Hill, NC 27599',
 } as const;
 

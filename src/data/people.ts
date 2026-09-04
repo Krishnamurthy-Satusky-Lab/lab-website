@@ -29,9 +29,9 @@ export const people: Person[] = [
     role: 'Research Scientist, RENCI',
     group: 'faculty',
     blurb:
-      'Avery leads the lab’s work on trustworthy clinical AI, with a focus on methods that hold up across the full range of patients a health system actually serves. Before UNC, they trained in biomedical informatics and worked with safety-net health systems on deployment.',
-    focus: 'Clinical NLP · fairness · human-AI decision making',
-    links: { email: 'avery.chen@unc.edu' },
+      'Developing explainable AI applications for health and public safety.',
+    focus: 'Clinical NLP · AI explainability · Agentic workflows',
+    links: { email: 'satusky@renci.org' },
   },
   {
     name: 'Swaroopa Dola',
