@@ -46,11 +46,3 @@ reusable components in `src/components/`, and the design system in
   `src/layouts/BaseLayout.astro` and `global.css`.
 - **Placeholder portraits** are generated as simple monograms. Replace them with
   real photos when available.
-
-## Known placeholders / next steps
-
-- Real lab name, people, projects, and publications.
-- Real headshots (replace the `Avatar` component usage).
-- A live contact form backend (the form currently composes a `mailto:` — wire it to
-  Formspree, Netlify Forms, or similar for on-site submission).
-- A deploy workflow once hosting is chosen (e.g. a GitHub Pages Action).
