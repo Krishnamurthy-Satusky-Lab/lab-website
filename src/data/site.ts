@@ -1,13 +1,13 @@
-// Central site config. Swap these placeholder values for the real lab identity.
+// Central site identity and contact information.
 
 export const site = {
-  name: 'Carolina Health AI Lab',
-  shortName: 'CHAI Lab',
-  tagline: 'Clinical and public health informatics.',
+  name: 'Carolina TRACE Lab',
+  shortName: 'TRACE Lab',
+  tagline: 'Transparent and Reliable AI for Complex Environments.',
   school: 'UNC School of Data & Information Sciences',
   university: 'The University of North Carolina at Chapel Hill',
   mission:
-    'We study how machine learning can support clinical care and public health, with an emphasis on evaluation, explanability, and responsible deployment.',
+    'We develop AI methods and systems that explain their outputs, quantify uncertainty, and operate reliably across complex real-world environments.',
   email: 'ashok@renci.org',
   location: 'Manning Hall, UNC-Chapel Hill, Chapel Hill, NC 27599',
 } as const;

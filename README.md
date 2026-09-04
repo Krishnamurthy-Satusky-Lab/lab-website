@@ -1,9 +1,8 @@
-# Carolina Health AI Lab — website
+# Carolina TRACE Lab website
 
-A static website for an academic lab in the **UNC School of Data & Information
-Sciences**, focused on AI for medical informatics and the public good. Built with
-[Astro](https://astro.build). The content is realistic **placeholder** material —
-swap it for the real lab identity before going live.
+A static website for the **Carolina TRACE Lab** in the UNC School of Data &
+Information Sciences. TRACE stands for Transparent and Reliable AI for Complex
+Environments. Built with [Astro](https://astro.build).
 
 ## Commands
 
