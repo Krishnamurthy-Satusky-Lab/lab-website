@@ -18,7 +18,7 @@ export const people: Person[] = [
     name: 'Ashok Krishnamurthy',
     role: 'Principal Investigator · Professor, SDIS',
     group: 'faculty',
-    lead: true,
+    lead: false,
     blurb:
       'Data analytics with applications in health care and social science, high-end computing for modeling and simulation, advanced computational tools to improve industrial productivity through virtual product and process development, digital processing to extract information from images, audio and other signals.',
     focus: 'Clinical NLP · fairness · human-AI decision making',
