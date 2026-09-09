@@ -13,8 +13,7 @@ npm run build    # static build → ./dist
 npm run preview  # serve the production build locally
 ```
 
-Output is plain static files in `dist/` — host it anywhere (GitHub Pages, UNC/RENCI
-servers, Netlify, S3, …). If you deploy under a sub-path, set `site` and `base` in
+Output is plain static files in `dist/`. If you deploy under a sub-path, set `site` and `base` in
 `astro.config.mjs`.
 
 ## Where to edit content
