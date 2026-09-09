@@ -1,8 +1,7 @@
-# Carolina TRACE Lab website
+# Krishnamurthy-Satusky Lab website
 
-A static website for the **Carolina TRACE Lab** in the UNC School of Data &
-Information Sciences. TRACE stands for Transparent and Reliable AI for Complex
-Environments. Built with [Astro](https://astro.build).
+A static website for the **Krishnamurthy-Satusky Lab** in the UNC School of Data &
+Information Sciences. Built with [Astro](https://astro.build).
 
 ## Commands
 

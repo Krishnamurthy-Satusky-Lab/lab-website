@@ -1,8 +1,8 @@
 // Central site identity and contact information.
 
 export const site = {
-  name: 'Carolina TRACE Lab',
-  shortName: 'TRACE Lab',
+  name: 'Krishnamurthy-Satusky Lab',
+  shortName: 'Krishnamurthy-Satusky Lab',
   tagline: 'Transparent & Reliable AI for Complex Environments',
   school: 'UNC School of Data & Information Sciences',
   university: 'The University of North Carolina at Chapel Hill',
